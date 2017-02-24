@@ -1,0 +1,35 @@
+{
+  "name": "estagio4me",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./lib/server/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "consign": "^0.1.2",
+    "core-js": "^2.4.1",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.24",
+    "mongoose": "^4.6.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+    },
+  "devDependencies": {
+    "@types/passport": "^0.3.3",
+    "@types/passport-local": "^1.0.29",
+    "@types/body-parser": "0.0.33",
+    "@types/core-js": "^0.9.34",
+    "@types/express": "^4.0.34",
+    "@types/mongodb": "^2.1.40",
+    "@types/mongoose": "^4.6.2",
+    "@types/node": "^6.0.45",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
+    "typescript": "^2.0.3"
+  },
+  "author": "Gustavo Barbosa"
+}
