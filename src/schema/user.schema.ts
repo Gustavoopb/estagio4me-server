@@ -1,20 +1,26 @@
-import { Schema } from 'mongoose';
-import { DatabaseConfig } from '../config/database.config';
-export var UserSchema: Schema = new Schema({
-    createdAt: Date,
-    updatedAt: Date,
-    email: String,
-    name: String
-});
-UserSchema.pre("save", true, function(next, done) {
-    let now = new Date();
-    if (!this.createdAt) {
-        this.createdAt = now;
-    }
-    this.updatedAt = now;
-    next();
-    setTimeout(done, 100);
-});
-UserSchema.methods.fullName = function (): string {
-    return (this.firstName.trim() + " " + this.lastName.trim());
+import { Document, Schema, Model, model } from "mongoose"
+import { DatabaseConfig } from '../config/database.config'
+import * as passportLocalMongoose from 'passport-local-mongoose'
+import { AbstractSchema } from './abstract/abstract.schema'
+import { IUserModel } from '../model/user.model'
+
+class UserSchema extends AbstractSchema {
+    constructor() {
+        super({
+            updatedAt: Date,
+            createdAt: Date,
+            firstName: String,
+            secondName: String,
+            username: String,
+            email: {
+                type: String,
+                unique: true
+            }
+        })
+        this.plugin(passportLocalMongoose, {
+            usernameLowerCase: true
+        })
+    };
 };
+
+export const User = model<IUserModel>("User", new UserSchema)

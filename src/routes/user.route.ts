@@ -1,41 +1,68 @@
-import { Request, Response, NextFunction } from 'express';
-import { AbstractRouter } from './abstract/abstract.router';
-import { User } from '../model/user.model';
+import { Request, Response, NextFunction } from 'express'
+import { AbstractRouter } from './abstract/abstract.router'
+import { User } from '../schema/user.schema'
+import * as passport from 'passport'
 
 
 class UserRoute extends AbstractRouter {
 
     constructor() {
-        super("/server/user");
+        super("/api/user")
+        this.init()
     }
 
-    public getAll(req: Request, res: Response, next: NextFunction) {
-        User.find({}, function (err, docs) {
+    public findOneAndUpdate(req: Request, res: Response, next: NextFunction) {
+        User.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
             if (!err) {
-                res.status(200).json(docs);
+                res.status(200).json(docs)
             } else {
-                console.log(err);
-                res.status(500).send(err);
-                throw err;
+                console.log(err)
+                res.status(500).send(err)
+                throw err
             }
-        });
+        })
     }
 
-    public saveUser(req: Request, res: Response, next: NextFunction) {
-        var user = new User();
-        user.name = req.body.name;
-        user.email = req.body.email;
-        user.save()
-        res.json(user);
+    public findById(req: Request, res: Response, next: NextFunction) {
+        User.findById(req.params.id, function (err, docs) {
+            if (!err) {
+                res.status(200).json(docs)
+            } else {
+                console.log(err)
+                res.status(500).send(err)
+                throw err
+            }
+        })
+    }
+
+    public findAll(req: Request, res: Response, next: NextFunction) {
+        User.find(function (err, docs) {
+            if (!err) {
+                res.status(200).json(docs)
+            } else {
+                console.log(err)
+                res.status(500).send(err)
+                throw err
+            }
+        })
+    }
+
+    public delete(req, res, next) {
+        User.remove({ __v: 0 }, function (err) {
+            if (err) {
+                res.json(err)
+            }
+        })
+        res.send("Deu certo")
     }
 
     init() {
-        this.route.post("/post", this.saveUser)
-        this.route.get("/find", this.getAll);
-        super.beUsed();
+        this.router.delete("/delete", this.delete)
+        this.router.post("/updateOne", this.findOneAndUpdate)
+        this.router.post("/findAll", this.findAll)
+        this.router.get("/findById/:id", this.findById)
+        super.beUsed()
     }
 }
 
-const userRoute: UserRoute = new UserRoute();
-userRoute.init();
-export default userRoute.route;
+export default new UserRoute().router

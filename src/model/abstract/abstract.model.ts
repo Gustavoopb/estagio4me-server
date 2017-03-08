@@ -1,6 +1,6 @@
-import {Document} from 'mongoose';
+import {Document} from 'mongoose'
 
 export interface IAbstractModel extends Document {
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date
+    updatedAt: Date
 }

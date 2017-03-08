@@ -1,9 +1,18 @@
-// import 'reflect-metadata';
-import {ServerConfig} from './config/server.config'
-import {DatabaseConfig} from './config/database.config'
-var consign = require('consign');
+import { ServerConfig } from './config/server.config'
+import { DatabaseConfig } from './config/database.config'
+import {Express} from 'express'
+import * as consign from 'consign'
 
-var serverApp = ServerConfig.getInstance();
-consign().include('lib/server/routes').into(serverApp);
-DatabaseConfig.connect();
-ServerConfig.startServer();
+class Index {
+
+    private _serverApp: Express
+
+    constructor() {
+        var _serverApp = ServerConfig.getInstance()
+        consign().include('lib/server/routes').into(_serverApp)
+        DatabaseConfig.connect()
+        ServerConfig.startServer()
+    }
+}
+
+export default new Index()
