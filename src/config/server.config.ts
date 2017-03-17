@@ -6,17 +6,20 @@ import * as expressSession from 'express-session'
 import * as passport from 'passport'
 import { Strategy } from 'passport-local'
 import { User } from '../schema/user.schema'
+import * as cors from 'cors';
+import { AuthStrategy } from './auth.strategy';
 
 export class ServerConfig {
     private static _instance: express.Express
 
+    public static jwtSecret:string = 'estagio4me secret'
 
     private constructor() {
     }
 
     public static startServer() {
         var server: Server = this._instance.listen(3000, () => {
-            console.log("Server is runing on port 3000 at "+ new Date().toLocaleString())
+            console.log("Server is runing on port 3000 at " + new Date().toLocaleString())
         })
         process.on('SIGINT', () => {
             server.close(() => {
@@ -35,18 +38,24 @@ export class ServerConfig {
 
     public static _factoryApp(): express.Express {
         var app: express.Express = express()
+        app.use(cors({
+            origin: '*',
+            optionsSuccessStatus: 200
+        }))
         app.use(bodyParser.json())
         app.use(bodyParser.urlencoded({ extended: true }))
         app.use(cookieParser())
         app.use(expressSession({
-            secret: 'estagio4me secret',
+            secret: this.jwtSecret,
             resave: false,
             saveUninitialized: false
         }))
+
         app.use(passport.initialize())
         app.use(passport.session())
 
         passport.use(User.createStrategy())
+        passport.use(new AuthStrategy(AuthStrategy.defaultOptions))
         passport.serializeUser(User.serializeUser())
         passport.deserializeUser(User.deserializeUser())
 
