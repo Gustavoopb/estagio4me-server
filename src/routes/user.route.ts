@@ -36,8 +36,10 @@ class UserRoute extends AbstractRouter {
     }
 
     public findAll(req: Request, res: Response, next: NextFunction) {
-        User.find(function (err, docs) {
+        console.log("Chegou aqui")
+        User.findOne(function (err, docs) {
             if (!err) {
+                console.log(req.headers,docs)
                 res.status(200).json(docs)
             } else {
                 console.log(err)
@@ -59,7 +61,7 @@ class UserRoute extends AbstractRouter {
     init() {
         this.router.delete("/delete", this.delete)
         this.router.post("/updateOne", this.findOneAndUpdate)
-        this.router.post("/findAll", this.findAll)
+        this.router.get("/findAll", this.findAll)
         this.router.get("/findById/:id", this.findById)
         super.beUsed()
     }
