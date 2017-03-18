@@ -36,8 +36,7 @@ class UserRoute extends AbstractRouter {
     }
 
     public findAll(req: Request, res: Response, next: NextFunction) {
-        console.log("Chegou aqui")
-        User.findOne(function (err, docs) {
+        User.find(function (err, docs) {
             if (!err) {
                 console.log(req.headers,docs)
                 res.status(200).json(docs)

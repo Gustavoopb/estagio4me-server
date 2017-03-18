@@ -20,7 +20,7 @@ class UserSchema extends AbstractSchema {
         this.plugin(passportLocalMongoose, {
             usernameLowerCase: true
         })
-    };
-};
+    }
+}
 
 export const User = model<IUserModel>("User", new UserSchema)

@@ -15,13 +15,13 @@ class UserRoute extends AbstractRouter {
     }
 
     public singUp(req: Request, res: Response, next: NextFunction) {
-        User.register(new User(req.body.user), req.body.password, function (err, account) {
+        User.register(new User(req.body.user), req.body.password, function (err, result) {
             if (err) {
                 console.log('error while user register!', err)
                 res.status(500).json(err)
             }
-            var result = {
-                [account]: account,
+            result = {
+                account: result,
                 message: "You have been successful registred!"
             }
             res.status(200).json(result)
@@ -29,6 +29,7 @@ class UserRoute extends AbstractRouter {
     }
 
     public checkEmailUsername(req: Request, res: Response, next: NextFunction) {
+        console.log(req.body)
         User.findOne(req.body, function (err, result) {
             if (err) {
                 res.status(500).json(err)
@@ -38,15 +39,16 @@ class UserRoute extends AbstractRouter {
     }
 
     public login(req: Request, res: Response, next: NextFunction) {
-        var user: IUserModel = new User(req.user)
-        var token = { token: jwt.encode(user, ServerConfig.jwtSecret) }
-        var result = {
-            token,
-            message: "You have been successful registred!"
-        }
-        req.originalUrl
-        console.log(token, req.headers["origin"])
-        res.status(200).json(result)
+        var token = jwt.encode(new User(req.user), ServerConfig.jwtSecret)
+        var user = User.findOne(req.user, (err, result) => {
+            var body = {
+                user: result,
+                token,
+                message: "You have been successful registred!"
+            }
+            
+            res.status(200).json(body)
+        })
     }
 
     init() {
