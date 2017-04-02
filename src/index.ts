@@ -1,7 +1,7 @@
 import { ServerConfig } from './config/server.config'
 import { DatabaseConfig } from './config/database.config'
 import {Express} from 'express'
-import * as consign from 'consign'
+var consign = require('consign')
 
 class Index {
 
