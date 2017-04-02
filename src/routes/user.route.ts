@@ -38,7 +38,6 @@ class UserRoute extends AbstractRouter {
     public findAll(req: Request, res: Response, next: NextFunction) {
         User.find(function (err, docs) {
             if (!err) {
-                console.log(req.headers,docs)
                 res.status(200).json(docs)
             } else {
                 console.log(err)
@@ -49,16 +48,19 @@ class UserRoute extends AbstractRouter {
     }
 
     public delete(req, res, next) {
-        User.remove({ __v: 0 }, function (err) {
+        User.remove({ "_id": req.params.id }, function (err) {
             if (err) {
-                res.json(err)
+                res.status(500).json(err)
+                throw err
+            } else {
+                res.send("User was deleted")
             }
         })
-        res.send("Deu certo")
+
     }
 
     init() {
-        this.router.delete("/delete", this.delete)
+        this.router.delete("/delete/:id", this.delete)
         this.router.post("/updateOne", this.findOneAndUpdate)
         this.router.get("/findAll", this.findAll)
         this.router.get("/findById/:id", this.findById)
