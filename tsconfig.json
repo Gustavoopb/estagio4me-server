@@ -9,10 +9,7 @@
     "removeComments": false,
     "noImplicitAny": false,
     "outDir": "./lib/server/",
-    "rootDirs": [
-      "server"
-    ]
-
+    "rootDir": "src"
   },
   "exclude": [
     "node_modules"
