@@ -6,8 +6,8 @@ import * as expressSession from 'express-session'
 import * as passport from 'passport'
 import { Strategy } from 'passport-local'
 import { User } from '../schema/user.schema'
-import * as cors from 'cors';
 import { AuthStrategy } from './auth.strategy';
+var cors = require('cors');
 
 export class ServerConfig {
     private static _instance: express.Express
@@ -18,8 +18,9 @@ export class ServerConfig {
     }
 
     public static startServer() {
-        var server: Server = this._instance.listen(3000, () => {
-            console.log("Server is runing on port 3000 at " + new Date().toLocaleString())
+        var port = process.env.PORT || 3000
+        var server: Server = this._instance.listen(port, () => {
+            console.log("Server is runing on port "+ port +" at " + new Date().toLocaleString())
         })
         process.on('SIGINT', () => {
             server.close(() => {

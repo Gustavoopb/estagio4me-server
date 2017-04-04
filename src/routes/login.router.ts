@@ -19,12 +19,13 @@ class UserRoute extends AbstractRouter {
             if (err) {
                 console.log('error while user register!', err)
                 res.status(500).json(err)
+            } else {
+                result = {
+                    account: result,
+                    message: "You have been successful registred!"
+                }
+                res.status(200).json(result)
             }
-            result = {
-                account: result,
-                message: "You have been successful registred!"
-            }
-            res.status(200).json(result)
         })
     }
 
@@ -44,9 +45,9 @@ class UserRoute extends AbstractRouter {
             var body = {
                 user: result,
                 token,
-                message: "You have been successful registred!"
+                message: "You have been successful logedin!"
             }
-            
+
             res.status(200).json(body)
         })
     }

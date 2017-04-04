@@ -50,7 +50,6 @@ class SkillRoute extends AbstractRouter {
     public findAll(req: Request, res: Response, next: NextFunction) {
         Skill.find((err, docs) => {
             if (!err) {
-                console.log(req.headers)
                 res.status(200).json(docs)
             } else {
                 console.log(err)
@@ -73,11 +72,11 @@ class SkillRoute extends AbstractRouter {
     }
 
     init() {
-        this.router.delete("/delete/:id", this.delete)
-        this.router.post("/updateOne", this.findOneAndUpdate)
-        this.router.get("/findAll", this.findAll)
-        this.router.post("/insert", this.insert)
-        this.router.get("/findById/:id", this.findById)
+        this.router.delete("/delete/:id", passport.authenticate('jwt'), this.delete)
+        this.router.post("/updateOne", passport.authenticate('jwt'), this.findOneAndUpdate)
+        this.router.get("/findAll", passport.authenticate('jwt'), this.findAll)
+        this.router.post("/insert", passport.authenticate('jwt'), this.insert)
+        this.router.get("/findById/:id", passport.authenticate('jwt'), this.findById)
         super.beUsed()
     }
 }

@@ -9,8 +9,8 @@ class InternshipSchema extends AbstractSchema {
         super({
             companyName: String,
             role: String,
-            required: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
-            prefered: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+            requiredSkills: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+            preferedSkills: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
             compensation: Number,
             isCompanyPrivate: Boolean,
             isCompesationPrivate: Boolean,
