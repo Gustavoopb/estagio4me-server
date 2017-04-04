@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "NODE_ENV=production node ./lib/server/index.js",
+    "start": "node ./lib/server/index.js",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1",

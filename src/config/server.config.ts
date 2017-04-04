@@ -12,7 +12,7 @@ var cors = require('cors');
 export class ServerConfig {
     private static _instance: express.Express
 
-    public static jwtSecret:string = 'estagio4me secret'
+    public static jwtSecret: string = 'estagio4me secret'
 
     private constructor() {
     }
@@ -20,7 +20,7 @@ export class ServerConfig {
     public static startServer() {
         var port = process.env.PORT || 3000
         var server: Server = this._instance.listen(port, () => {
-            console.log("Server is runing on port "+ port +" at " + new Date().toLocaleString())
+            console.log("Server is runing on port " + port + " at " + new Date().toLocaleString())
         })
         process.on('SIGINT', () => {
             server.close(() => {
@@ -39,6 +39,9 @@ export class ServerConfig {
 
     public static _factoryApp(): express.Express {
         var app: express.Express = express()
+        app.get('/', function (request, response) {
+            response.send('You are on server');
+        })
         app.use(cors({
             origin: '*',
             optionsSuccessStatus: 200
