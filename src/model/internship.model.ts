@@ -10,5 +10,6 @@ export interface IInternshipModel extends IAbstractModel{
     isCompanyPrivate: Boolean,
     isCompesationPrivate: Boolean,
     isActive: Boolean,
+    contact: String,
     area: String
 }

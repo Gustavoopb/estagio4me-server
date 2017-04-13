@@ -1,10 +1,9 @@
-import { Document, Schema, Model, model } from "mongoose"
-import { DatabaseConfig } from '../config/database.config'
-import * as passportLocalMongoose from 'passport-local-mongoose'
-import { AbstractSchema } from './abstract/abstract.schema'
-import { IUserModel } from '../model/user.model'
-
-class UserSchema extends AbstractSchema {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const passportLocalMongoose = require("passport-local-mongoose");
+const abstract_schema_1 = require("./abstract/abstract.schema");
+class UserSchema extends abstract_schema_1.AbstractSchema {
     constructor() {
         super({
             updatedAt: Date,
@@ -20,11 +19,11 @@ class UserSchema extends AbstractSchema {
                 type: Boolean,
                 default: false
             }
-        })
+        });
         this.plugin(passportLocalMongoose, {
             usernameLowerCase: true
-        })
+        });
     }
 }
-
-export const User = model<IUserModel>("User", new UserSchema)
+exports.User = mongoose_1.model("User", new UserSchema);
+//# sourceMappingURL=user.schema.js.map

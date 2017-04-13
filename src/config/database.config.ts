@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 
 export class DatabaseConfig {
-  public static URI: string = process.env.MONGODB_URI ||  "mongodb://localhost:27017/local"
+  public static URI: string = process.env.MONGODB_URI || "mongodb://mongo:27017/local"
 
   public static connect() {
     mongoose.connect(this.URI)

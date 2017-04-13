@@ -7,17 +7,28 @@ import { SkillSchema } from './skill.schema'
 class InternshipSchema extends AbstractSchema {
     constructor() {
         super({
+            updatedAt: Date,
+            createdAt: Date,
             companyName: String,
             role: String,
-            requiredSkills: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
-            preferedSkills: [{type: Schema.Types.ObjectId, ref: 'Skill'}],
+            requiredSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
+            preferedSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
             compensation: Number,
             isCompanyPrivate: Boolean,
             isCompesationPrivate: Boolean,
-            isActive: {type: Boolean, default: false},
+            isActive: { type: Boolean, default: false },
+            contact: String,
             area: String
         })
-      
+        this.pre("validate", true, function (next, done) {
+            let now = new Date()
+            if (!this.createdAt) {
+                this.createdAt = now
+            }
+            this.updatedAt = now
+            next()
+            setTimeout(done, 1000)
+        })
     }
 }
 

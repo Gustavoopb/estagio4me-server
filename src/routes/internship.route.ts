@@ -53,7 +53,7 @@ class InternshipRoute extends AbstractRouter {
     }
 
     public findAll(req: Request, res: Response, next: NextFunction) {
-        Internship.find().populate('preferedSkills').populate('requiredSkills').exec((err, docs) => {
+        Internship.find({isActive: true}).populate('preferedSkills').populate('requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs)
             } else {
