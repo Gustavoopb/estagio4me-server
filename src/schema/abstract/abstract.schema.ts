@@ -10,7 +10,7 @@ export abstract class AbstractSchema extends Schema {
             }
             this.updatedAt = now
             next()
-            setTimeout(done, 1000)
+            setTimeout(done, 10000)
         })
         this.pre("findByIdAndUpdate", true, function (next, done) {
             let now = new Date()
@@ -19,7 +19,7 @@ export abstract class AbstractSchema extends Schema {
             }
             this.updatedAt = now
             next()
-            setTimeout(done, 1000)
+            setTimeout(done, 10000)
         })
     }
 }

@@ -11,7 +11,7 @@ class AbstractSchema extends mongoose_1.Schema {
             }
             this.updatedAt = now;
             next();
-            setTimeout(done, 1000);
+            setTimeout(done, 10000);
         });
         this.pre("findByIdAndUpdate", true, function (next, done) {
             let now = new Date();
@@ -20,7 +20,7 @@ class AbstractSchema extends mongoose_1.Schema {
             }
             this.updatedAt = now;
             next();
-            setTimeout(done, 1000);
+            setTimeout(done, 10000);
         });
     }
 }
