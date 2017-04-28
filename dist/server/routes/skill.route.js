@@ -10,15 +10,30 @@ class SkillRoute extends abstract_router_1.AbstractRouter {
     }
     insert(req, res, next) {
         var skill = new skill_schema_1.Skill(req.body);
-        skill.save((err, data) => {
+        skill.save((err, docs) => {
             if (err) {
                 console.log(err);
                 res.status(500).send(err);
             }
             else {
-                res.status(200).json(data);
+                res.status(200).json(docs);
             }
         });
+    }
+    insertMany(req, res, next) {
+        var result = [];
+        req.body.forEach(sk => {
+            var skill = new skill_schema_1.Skill(sk);
+            skill.save((err, docs) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    result.push(docs);
+                }
+            });
+        });
+        res.status(200).json(result);
     }
     findOneAndUpdate(req, res, next) {
         skill_schema_1.Skill.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
@@ -56,6 +71,18 @@ class SkillRoute extends abstract_router_1.AbstractRouter {
             }
         });
     }
+    find(req, res, next) {
+        skill_schema_1.Skill.find({ name: new RegExp(req.body.name, 'gi') }).sort({ name: 1 }).exec((err, docs) => {
+            if (!err) {
+                res.status(200).json(docs);
+            }
+            else {
+                console.log(err);
+                res.status(500).send(err);
+                throw err;
+            }
+        });
+    }
     delete(req, res, next) {
         skill_schema_1.Skill.remove({ "_id": req.params.id }, function (err) {
             if (err) {
@@ -69,10 +96,12 @@ class SkillRoute extends abstract_router_1.AbstractRouter {
     }
     init() {
         this.router.delete("/delete/:id", passport.authenticate('jwt'), this.delete);
-        this.router.post("/updateOne", passport.authenticate('jwt'), this.findOneAndUpdate);
-        this.router.get("/findAll", this.findAll);
-        this.router.post("/insert", this.insert);
+        this.router.post("/find", passport.authenticate('jwt'), this.find);
+        this.router.get("/findAll", passport.authenticate('jwt'), this.findAll);
         this.router.get("/findById/:id", passport.authenticate('jwt'), this.findById);
+        this.router.post("/insert", passport.authenticate('jwt'), this.insert);
+        this.router.post("/insertMany", passport.authenticate('jwt'), this.insertMany);
+        this.router.post("/updateOne", passport.authenticate('jwt'), this.findOneAndUpdate);
         super.beUsed();
     }
 }

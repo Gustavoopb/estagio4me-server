@@ -29,7 +29,8 @@ class InternshipRoute extends AbstractRouter {
     }
 
     public findOneAndUpdate(req: Request, res: Response, next: NextFunction) {
-        Internship.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
+        var internship = new Internship(req.body)
+        Internship.findByIdAndUpdate(internship.get('id'), internship, function (err, docs) {
             if (!err) {
                 res.status(200).json(docs)
             } else {
@@ -53,7 +54,19 @@ class InternshipRoute extends AbstractRouter {
     }
 
     public findAll(req: Request, res: Response, next: NextFunction) {
-        Internship.find({isActive: true}).populate('preferedSkills').populate('requiredSkills').exec((err, docs) => {
+        Internship.find().populate('preferedSkills').populate('requiredSkills').exec((err, docs) => {
+            if (!err) {
+                res.status(200).json(docs)
+            } else {
+                console.log(err)
+                res.status(500).send(err)
+                throw err
+            }
+        })
+    }
+
+    public findByFilter(req: Request, res: Response, next: NextFunction) {
+        Internship.find(req.body).populate('preferedSkills').populate('requiredSkills').sort({createdAt: -1}).exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs)
             } else {
@@ -80,6 +93,7 @@ class InternshipRoute extends AbstractRouter {
         this.router.delete("/delete/:id", passport.authenticate('jwt'), this.delete)
         this.router.post("/updateOne", passport.authenticate('jwt'), this.findOneAndUpdate)
         this.router.get("/findAll", passport.authenticate('jwt'), this.findAll)
+        this.router.post("/findByFilter", passport.authenticate('jwt'), this.findByFilter)
         this.router.post("/insert", passport.authenticate('jwt'), this.insert)
         this.router.get("/findById/:id", passport.authenticate('jwt'), this.findById)
         super.beUsed()
