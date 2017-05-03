@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const abstract_router_1 = require("./abstract/abstract.router");
 const internship_schema_1 = require("../schema/internship.schema");
-const skill_schema_1 = require("../schema/skill.schema");
 const passport = require("passport");
 class InternshipRoute extends abstract_router_1.AbstractRouter {
     constructor() {
@@ -10,8 +9,6 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         this.init();
     }
     insert(req, res, next) {
-        req.body.requiredSkills.forEach(sk => sk = new skill_schema_1.Skill(sk));
-        req.body.preferedSkills.forEach(sk => sk = new skill_schema_1.Skill(sk));
         var internship = new internship_schema_1.Internship(req.body);
         internship.save((err, data) => {
             if (err) {
@@ -25,7 +22,9 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
     }
     findOneAndUpdate(req, res, next) {
         var internship = new internship_schema_1.Internship(req.body);
-        internship_schema_1.Internship.findByIdAndUpdate(internship.get('id'), internship, function (err, docs) {
+        internship_schema_1.Internship.findByIdAndUpdate(internship.get('id'), internship)
+            .populate('_preferedSkills').populate('_requiredSkills')
+            .exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
@@ -49,7 +48,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         });
     }
     findAll(req, res, next) {
-        internship_schema_1.Internship.find().populate('preferedSkills').populate('requiredSkills').exec((err, docs) => {
+        internship_schema_1.Internship.find().populate('_preferedSkills').populate('_requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
@@ -61,7 +60,19 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         });
     }
     findByFilter(req, res, next) {
-        internship_schema_1.Internship.find(req.body).populate('preferedSkills').populate('requiredSkills').sort({ createdAt: -1 }).exec((err, docs) => {
+        internship_schema_1.Internship.find(req.body).populate('_preferedSkills').populate('_requiredSkills').sort({ _createdAt: -1 }).exec((err, docs) => {
+            if (!err) {
+                res.status(200).json(docs);
+            }
+            else {
+                console.log(err);
+                res.status(500).send(err);
+                throw err;
+            }
+        });
+    }
+    findOneByFilter(req, res, next) {
+        internship_schema_1.Internship.findOne(req.body).populate('_preferedSkills').populate('_requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
@@ -73,13 +84,13 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         });
     }
     delete(req, res, next) {
-        internship_schema_1.Internship.remove({ "_id": req.params.id }, function (err) {
+        internship_schema_1.Internship.remove({ "_id": req.params.id }, (err) => {
             if (err) {
                 res.status(500).json(err);
                 throw err;
             }
             else {
-                res.send("Internship was deleted");
+                res.status(200).json({ message: "Internship was deleted" });
             }
         });
     }
@@ -88,6 +99,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         this.router.post("/updateOne", passport.authenticate('jwt'), this.findOneAndUpdate);
         this.router.get("/findAll", passport.authenticate('jwt'), this.findAll);
         this.router.post("/findByFilter", passport.authenticate('jwt'), this.findByFilter);
+        this.router.post("/findOneByFilter", passport.authenticate('jwt'), this.findOneByFilter);
         this.router.post("/insert", passport.authenticate('jwt'), this.insert);
         this.router.get("/findById/:id", passport.authenticate('jwt'), this.findById);
         super.beUsed();

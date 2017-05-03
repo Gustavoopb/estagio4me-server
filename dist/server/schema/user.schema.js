@@ -6,22 +6,24 @@ const abstract_schema_1 = require("./abstract/abstract.schema");
 class UserSchema extends abstract_schema_1.AbstractSchema {
     constructor() {
         super({
-            updatedAt: Date,
-            createdAt: Date,
-            firstName: String,
-            secondName: String,
-            username: String,
-            email: {
+            _updatedAt: Date,
+            _createdAt: Date,
+            _firstName: String,
+            _lastName: String,
+            _username: String,
+            _email: {
                 type: String,
                 unique: true
             },
-            isAdmin: {
+            _isAdmin: {
                 type: Boolean,
                 default: false
             }
         });
         this.plugin(passportLocalMongoose, {
-            usernameLowerCase: true
+            usernameLowerCase: true,
+            usernameField: '_username',
+            passwordField: '_password'
         });
     }
 }

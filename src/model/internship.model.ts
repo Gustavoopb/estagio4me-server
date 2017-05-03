@@ -2,14 +2,15 @@ import { IAbstractModel } from './abstract/abstract.model'
 import { ISkillModel } from './skill.model';
 
 export interface IInternshipModel extends IAbstractModel{
-    companyName: String,
-    role: String,
-    requiredSkills: ISkillModel[],
-    preferedSkills: ISkillModel[],
-    compensation: Number,
-    isCompanyPrivate: Boolean,
-    isCompesationPrivate: Boolean,
-    isActive: Boolean,
-    contact: String,
-    area: String
+    _companyName: String,
+    _role: String,
+    _requiredSkills: ISkillModel[],
+    _preferedSkills: ISkillModel[],
+    _compensation: Number,
+    _isCompanyPrivate: Boolean,
+    _isCompensationPrivate: Boolean,
+    _isActive: Boolean,
+    _contact: String,
+    _area: String,
+    _description: String
 }

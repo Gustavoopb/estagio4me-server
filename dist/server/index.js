@@ -7,7 +7,6 @@ class Index {
     constructor() {
         var _serverApp = server_config_1.ServerConfig.getInstance();
         consign().include('dist/server/routes').into(_serverApp);
-        console.log(process.env.NODE_ENV);
         database_config_1.DatabaseConfig.connect();
         server_config_1.ServerConfig.startServer();
     }

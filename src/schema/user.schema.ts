@@ -1,5 +1,4 @@
 import { Document, Schema, Model, model } from "mongoose"
-import { DatabaseConfig } from '../config/database.config'
 import * as passportLocalMongoose from 'passport-local-mongoose'
 import { AbstractSchema } from './abstract/abstract.schema'
 import { IUserModel } from '../model/user.model'
@@ -7,22 +6,24 @@ import { IUserModel } from '../model/user.model'
 class UserSchema extends AbstractSchema {
     constructor() {
         super({
-            updatedAt: Date,
-            createdAt: Date,
-            firstName: String,
-            secondName: String,
-            username: String,
-            email: {
+            _updatedAt: Date,
+            _createdAt: Date,
+            _firstName: String,
+            _lastName: String,
+            _username: String,
+            _email: {
                 type: String,
                 unique: true
             },
-            isAdmin: {
+            _isAdmin: {
                 type: Boolean,
                 default: false
             }
         })
         this.plugin(passportLocalMongoose, {
-            usernameLowerCase: true
+            usernameLowerCase: true,
+            usernameField: '_username',
+            passwordField: '_password'
         })
     }
 }

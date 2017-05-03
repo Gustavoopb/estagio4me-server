@@ -5,9 +5,9 @@ const abstract_schema_1 = require("./abstract/abstract.schema");
 class SkillSchema extends abstract_schema_1.AbstractSchema {
     constructor() {
         super({
-            updatedAt: Date,
-            createdAt: Date,
-            name: {
+            _updatedAt: Date,
+            _createdAt: Date,
+            _name: {
                 type: String,
                 unique: true,
             }

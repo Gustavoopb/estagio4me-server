@@ -6,22 +6,40 @@ class AbstractSchema extends mongoose_1.Schema {
         super(definition, options);
         this.pre("validate", true, function (next, done) {
             let now = new Date();
-            if (!this.createdAt) {
-                this.createdAt = now;
+            if (!this._createdAt) {
+                this._createdAt = now;
             }
-            this.updatedAt = now;
+            this._updatedAt = now;
             next();
-            setTimeout(done, 10000);
+            setTimeout(done, 1000);
         });
         this.pre("findByIdAndUpdate", true, function (next, done) {
             let now = new Date();
-            if (!this.createdAt) {
-                this.createdAt = now;
+            if (!this._createdAt) {
+                this._createdAt = now;
             }
-            this.updatedAt = now;
+            this._updatedAt = now;
             next();
-            setTimeout(done, 10000);
+            setTimeout(done, 1000);
         });
+        this.pre("save", true, function (next, done) {
+            let now = new Date();
+            if (!this._createdAt) {
+                this._createdAt = now;
+            }
+            this._updatedAt = now;
+            next();
+            setTimeout(done, 1000);
+        });
+    }
+    get createdAt() {
+        return this._createdAt;
+    }
+    get updatedAt() {
+        return this._updatedAt;
+    }
+    set updatedAt(v) {
+        this._updatedAt = v;
     }
 }
 exports.AbstractSchema = AbstractSchema;

@@ -30,7 +30,6 @@ class UserRoute extends AbstractRouter {
     }
 
     public checkEmailUsername(req: Request, res: Response, next: NextFunction) {
-        console.log(req.body)
         User.findOne(req.body, function (err, result) {
             if (err) {
                 res.status(500).json(err)
@@ -52,10 +51,22 @@ class UserRoute extends AbstractRouter {
         })
     }
 
+    public reAuth(req: Request, res: Response, next: NextFunction) {
+        var token = jwt.encode(new User(req.user), ServerConfig.jwtSecret)
+        var user = User.findOne(req.user, (err, result) => {
+            var body = {
+                user: result,
+                token
+            }
+            res.status(200).json(body)
+        })
+    }
+
     init() {
         this.router.post("/singUp", this.singUp)
         this.router.post("/checkEmailUsername", this.checkEmailUsername)
         this.router.post("/login", passport.authenticate('local'), this.login)
+        this.router.get("/reAuth", passport.authenticate('jwt'), this.reAuth)
         super.beUsed()
     }
 }

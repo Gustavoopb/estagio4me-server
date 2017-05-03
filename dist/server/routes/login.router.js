@@ -26,7 +26,6 @@ class UserRoute extends abstract_router_1.AbstractRouter {
         });
     }
     checkEmailUsername(req, res, next) {
-        console.log(req.body);
         user_schema_1.User.findOne(req.body, function (err, result) {
             if (err) {
                 res.status(500).json(err);
@@ -45,10 +44,21 @@ class UserRoute extends abstract_router_1.AbstractRouter {
             res.status(200).json(body);
         });
     }
+    reAuth(req, res, next) {
+        var token = jwt.encode(new user_schema_1.User(req.user), server_config_1.ServerConfig.jwtSecret);
+        var user = user_schema_1.User.findOne(req.user, (err, result) => {
+            var body = {
+                user: result,
+                token
+            };
+            res.status(200).json(body);
+        });
+    }
     init() {
         this.router.post("/singUp", this.singUp);
         this.router.post("/checkEmailUsername", this.checkEmailUsername);
         this.router.post("/login", passport.authenticate('local'), this.login);
+        this.router.get("/reAuth", passport.authenticate('jwt'), this.reAuth);
         super.beUsed();
     }
 }
