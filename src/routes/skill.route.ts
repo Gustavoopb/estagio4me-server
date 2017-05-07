@@ -16,7 +16,7 @@ class SkillRoute extends AbstractRouter {
         skill.save((err, docs) => {
             if (err) {
                 console.log(err)
-                res.status(500).send(err)
+                res.status(500).json(err)
             } else {
                 res.status(200).json(docs)
             }
@@ -39,68 +39,51 @@ class SkillRoute extends AbstractRouter {
     }
 
     public findOneAndUpdate(req: Request, res: Response, next: NextFunction) {
-        Skill.findByIdAndUpdate(req.body._id, req.body, function (err, docs) {
+        Skill.findByIdAndUpdate(req.body._id, req.body, (err, docs) => {
             if (!err) {
                 res.status(200).json(docs)
             } else {
                 console.log(err)
-                res.status(500).send(err)
-                throw err
+                res.status(500).json(err)
             }
         })
     }
 
     public findById(req: Request, res: Response, next: NextFunction) {
-        Skill.findById(req.params.id, function (err, docs) {
+        Skill.findById(req.params.id, (err, docs) => {
             if (!err) {
                 res.status(200).json(docs)
             } else {
                 console.log(err)
-                res.status(500).send(err)
-                throw err
+                res.status(500).json(err)
             }
         })
     }
 
     public findAll(req: Request, res: Response, next: NextFunction) {
-        Skill.find().sort({name: 1}).exec((err, docs) => {
+        Skill.find().sort({ name: 1 }).exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs)
             } else {
                 console.log(err)
-                res.status(500).send(err)
-                throw err
-            }
-        })
-    }
-
-    public find(req: Request, res: Response, next: NextFunction) {
-        Skill.find({name: new RegExp(req.body.name, 'gi')}).sort({name: 1}).exec((err, docs) => {
-            if (!err) {
-                res.status(200).json(docs)
-            } else {
-                console.log(err)
-                res.status(500).send(err)
-                throw err
+                res.status(500).json(err)
             }
         })
     }
 
     public delete(req, res, next) {
-        Skill.remove({ "_id": req.params.id }, function (err) {
+        Skill.remove({ "_id": req.params.id }, (err) => {
             if (err) {
                 res.status(500).json(err)
-                throw err
+
             } else {
-                res.send("Skill was deleted")
+                res.status(200).send("Skill was deleted")
             }
         })
-
     }
 
     init() {
         this.router.delete("/delete/:id", passport.authenticate('jwt'), this.delete)
-        this.router.post("/find", passport.authenticate('jwt'), this.find)
         this.router.get("/findAll", passport.authenticate('jwt'), this.findAll)
         this.router.get("/findById/:id", passport.authenticate('jwt'), this.findById)
         this.router.post("/insert", passport.authenticate('jwt'), this.insert)

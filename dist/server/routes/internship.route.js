@@ -13,7 +13,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         internship.save((err, data) => {
             if (err) {
                 console.log(err);
-                res.status(500).send(err);
+                res.status(500).json(err);
             }
             else {
                 res.status(200).json(data);
@@ -23,15 +23,14 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
     findOneAndUpdate(req, res, next) {
         var internship = new internship_schema_1.Internship(req.body);
         internship_schema_1.Internship.findByIdAndUpdate(internship.get('id'), internship)
-            .populate('_preferedSkills').populate('_requiredSkills')
+            .populate('_preferredSkills').populate('_requiredSkills')
             .exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
             else {
                 console.log(err);
-                res.status(500).send(err);
-                throw err;
+                res.status(500).json(err);
             }
         });
     }
@@ -42,44 +41,40 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
             }
             else {
                 console.log(err);
-                res.status(500).send(err);
-                throw err;
+                res.status(500).json(err);
             }
         });
     }
     findAll(req, res, next) {
-        internship_schema_1.Internship.find().populate('_preferedSkills').populate('_requiredSkills').exec((err, docs) => {
+        internship_schema_1.Internship.find().populate('_preferredSkills').populate('_requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
             else {
                 console.log(err);
-                res.status(500).send(err);
-                throw err;
+                res.status(500).json(err);
             }
         });
     }
     findByFilter(req, res, next) {
-        internship_schema_1.Internship.find(req.body).populate('_preferedSkills').populate('_requiredSkills').sort({ _createdAt: -1 }).exec((err, docs) => {
+        internship_schema_1.Internship.find(req.body).populate('_preferredSkills').populate('_requiredSkills').sort({ _createdAt: -1 }).exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
             else {
                 console.log(err);
-                res.status(500).send(err);
-                throw err;
+                res.status(500).json(err);
             }
         });
     }
     findOneByFilter(req, res, next) {
-        internship_schema_1.Internship.findOne(req.body).populate('_preferedSkills').populate('_requiredSkills').exec((err, docs) => {
+        internship_schema_1.Internship.findOne(req.body).populate('_preferredSkills').populate('_requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
             else {
                 console.log(err);
-                res.status(500).send(err);
-                throw err;
+                res.status(500).json(err);
             }
         });
     }
@@ -87,7 +82,6 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         internship_schema_1.Internship.remove({ "_id": req.params.id }, (err) => {
             if (err) {
                 res.status(500).json(err);
-                throw err;
             }
             else {
                 res.status(200).json({ message: "Internship was deleted" });

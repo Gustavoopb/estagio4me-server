@@ -3,15 +3,13 @@ import { AbstractSchema } from './abstract/abstract.schema'
 import { IInternshipModel } from '../model/internship.model'
 import { SkillSchema } from './skill.schema'
 
-class InternshipSchema extends AbstractSchema {
+export class InternshipSchema extends AbstractSchema {
     constructor() {
         super({
-            _updatedAt: Date,
-            _createdAt: Date,
-            _companyName: String,
+           _companyName: String,
             _role: String,
             _requiredSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
-            _preferedSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
+            _preferredSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
             _compensation: Number,
             _isCompanyPrivate: { type: Boolean, default: false },
             _isCompensationPrivate: { type: Boolean, default: false },

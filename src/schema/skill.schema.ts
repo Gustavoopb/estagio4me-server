@@ -5,8 +5,6 @@ import { ISkillModel } from '../model/skill.model'
 export class SkillSchema extends AbstractSchema {
     constructor() {
         super({
-            _updatedAt: Date,
-            _createdAt: Date,
             _name: {
                 type: String,
                 unique: true,

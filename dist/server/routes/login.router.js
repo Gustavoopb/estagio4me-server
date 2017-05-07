@@ -19,7 +19,7 @@ class UserRoute extends abstract_router_1.AbstractRouter {
             else {
                 result = {
                     account: result,
-                    message: "You have been successful registred!"
+                    message: "Você foi registrado com sucesso!"
                 };
                 res.status(200).json(result);
             }
@@ -39,7 +39,7 @@ class UserRoute extends abstract_router_1.AbstractRouter {
             var body = {
                 user: result,
                 token,
-                message: "You have been successful logedin!"
+                message: "Seja bem-vindo, " + result._firstName + "!"
             };
             res.status(200).json(body);
         });
