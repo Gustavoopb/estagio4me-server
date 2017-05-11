@@ -23,7 +23,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
     findOneAndUpdate(req, res, next) {
         var internship = new internship_schema_1.Internship(req.body);
         internship_schema_1.Internship.findByIdAndUpdate(internship.get('id'), internship)
-            .populate('_preferredSkills').populate('_requiredSkills')
+            .populate('_preferredSkills _requiredSkills')
             .exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
@@ -46,7 +46,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         });
     }
     findAll(req, res, next) {
-        internship_schema_1.Internship.find().populate('_preferredSkills').populate('_requiredSkills').exec((err, docs) => {
+        internship_schema_1.Internship.find().populate('_preferredSkills _requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
@@ -57,7 +57,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         });
     }
     findByFilter(req, res, next) {
-        internship_schema_1.Internship.find(req.body).populate('_preferredSkills').populate('_requiredSkills').sort({ _createdAt: -1 }).exec((err, docs) => {
+        internship_schema_1.Internship.find(req.body).populate('_preferredSkills _requiredSkills').sort({ _createdAt: -1 }).exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
@@ -68,7 +68,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         });
     }
     findOneByFilter(req, res, next) {
-        internship_schema_1.Internship.findOne(req.body).populate('_preferredSkills').populate('_requiredSkills').exec((err, docs) => {
+        internship_schema_1.Internship.findOne(req.body).populate('_preferredSkills _requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
             }
@@ -92,7 +92,7 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         this.router.delete("/delete/:id", passport.authenticate('jwt'), this.delete);
         this.router.post("/updateOne", passport.authenticate('jwt'), this.findOneAndUpdate);
         this.router.get("/findAll", passport.authenticate('jwt'), this.findAll);
-        this.router.post("/findByFilter", passport.authenticate('jwt'), this.findByFilter);
+        this.router.post("/findByFilter", this.findByFilter);
         this.router.post("/findOneByFilter", passport.authenticate('jwt'), this.findOneByFilter);
         this.router.post("/insert", passport.authenticate('jwt'), this.insert);
         this.router.get("/findById/:id", passport.authenticate('jwt'), this.findById);
