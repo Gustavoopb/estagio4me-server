@@ -1,7 +1,7 @@
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt'
-import { ServerConfig } from './server.config'
+
 import { User } from '../schema/user.schema'
-import { IUserModel } from '../model/user.model'
+
 export class AuthStrategy extends Strategy {
 
     static defaultOptions: StrategyOptions = {
@@ -15,9 +15,9 @@ export class AuthStrategy extends Strategy {
         super(options, (payload, done) => {
             if (payload) {
                 var user = new User(payload)
-                return done(null, user);
+                return done(null, user)
             } else {
-                return done(new Error("User not found"), null);
+                return done(new Error("User not found"), null)
             }
         })
     }

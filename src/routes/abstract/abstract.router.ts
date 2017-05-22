@@ -1,26 +1,28 @@
-import {Express, Router} from 'express'
-import {ServerConfig} from '../../config/server.config'
-import * as passport from 'passport'
-import * as expressSession from 'express-session'
+import { Express, Router } from 'express'
 
-export abstract class AbstractRouter {
-    protected app: Express
-    protected url: string
-    public router: Router
+import { AbstractController } from "../../controller/abstract/abstract.controller"
+import { ServerConfig } from '../../config/server.config'
 
+export abstract class AbstractRouter<T extends AbstractController> {
 
-    constructor(url:string){
-        this.app = ServerConfig.getInstance()
-        this.router = Router()
-        this.url = url
+    constructor(protected url: string,
+        public controller: T,
+        protected app: Express = ServerConfig.getInstance(),
+        public router: Router = Router()) {
+        this.init()
     }
 
-    private configureAuthSession() {
-
-    }
-
-    protected beUsed(){
+    protected beUsed() {
         this.app.use(this.url, this.router)
+        console.log("+ ".concat(this.url))
+        this.router.stack.forEach((st) => {
+            for (var method in st.route.methods) {
+                console.log("   - ".concat(method)
+                    .concat(" ".repeat(10 - method.length))
+                    .concat(st.route.path))
+            }
+        })
+        console.log("")
     }
 
     abstract init()

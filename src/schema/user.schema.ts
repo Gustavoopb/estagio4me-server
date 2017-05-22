@@ -1,5 +1,7 @@
-import { Document, Schema, Model, model } from "mongoose"
 import * as passportLocalMongoose from 'passport-local-mongoose'
+
+import { Schema, model } from "mongoose"
+
 import { AbstractSchema } from './abstract/abstract.schema'
 import { IUserModel } from '../model/user.model'
 
@@ -8,7 +10,10 @@ export class UserSchema extends AbstractSchema {
         super({
             _firstName: String,
             _lastName: String,
-            _username: String,
+            _username: {
+                type: String,
+                unique: true
+            },
             _email: {
                 type: String,
                 unique: true

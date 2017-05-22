@@ -1,6 +1,6 @@
-import { Document, Schema, Model, model } from "mongoose"
 import { AbstractSchema } from './abstract/abstract.schema'
 import { ISkillModel } from '../model/skill.model'
+import { model } from "mongoose"
 
 export class SkillSchema extends AbstractSchema {
     constructor() {

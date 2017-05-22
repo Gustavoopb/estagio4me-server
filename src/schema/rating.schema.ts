@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose"
+
 import { AbstractSchema } from './abstract/abstract.schema'
-import { InternshipSchema } from "./internship.schema";
-import { UserSchema } from "./user.schema";
-import { IRatingModel } from "../model/rating.model";
+import { IRatingModel } from "../model/rating.model"
 
 export class RatingSchema extends AbstractSchema {
     constructor() {

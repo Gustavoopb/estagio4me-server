@@ -1,14 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
+const mongoose_1 = require("mongoose");
 const abstract_schema_1 = require("./abstract/abstract.schema");
 class UserSchema extends abstract_schema_1.AbstractSchema {
     constructor() {
         super({
             _firstName: String,
             _lastName: String,
-            _username: String,
+            _username: {
+                type: String,
+                unique: true
+            },
             _email: {
                 type: String,
                 unique: true

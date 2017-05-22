@@ -1,12 +1,12 @@
-import { Document, Schema, Model, model } from "mongoose"
+import { Schema, model } from "mongoose"
+
 import { AbstractSchema } from './abstract/abstract.schema'
 import { IInternshipModel } from '../model/internship.model'
-import { SkillSchema } from './skill.schema'
 
 export class InternshipSchema extends AbstractSchema {
     constructor() {
         super({
-           _companyName: String,
+            _companyName: String,
             _role: String,
             _requiredSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],
             _preferredSkills: [{ type: Schema.Types.ObjectId, ref: 'Skill' }],

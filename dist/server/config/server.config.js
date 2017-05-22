@@ -1,16 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const express = require("express");
 const expressSession = require("express-session");
 const passport = require("passport");
-const user_schema_1 = require("../schema/user.schema");
 const auth_strategy_1 = require("./auth.strategy");
-var cors = require('cors');
+const user_schema_1 = require("../schema/user.schema");
 class ServerConfig {
-    constructor() {
-    }
+    constructor() { }
     static startServer() {
         var port = process.env.PORT || 3000;
         var server = this._instance.listen(port, () => {
@@ -24,7 +23,7 @@ class ServerConfig {
         });
     }
     static getInstance() {
-        if (this._instance == null) {
+        if (!this._instance) {
             this._instance = this._factoryApp();
         }
         return this._instance;

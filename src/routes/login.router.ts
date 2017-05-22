@@ -1,74 +1,25 @@
-import { Request, Response, NextFunction } from 'express'
-import { AbstractRouter } from './abstract/abstract.router'
-import { User } from '../schema/user.schema'
-import { IUserModel } from '../model/user.model'
-import { ServerConfig } from '../config/server.config'
 import * as passport from 'passport'
-import * as jwt from 'jwt-simple'
 
+import { NextFunction, Request, Response } from 'express'
 
-class UserRoute extends AbstractRouter {
+import { AbstractRouter } from './abstract/abstract.router'
+import { LoginController } from "../controller/login.controller"
+
+class LoginRoute extends AbstractRouter<LoginController> {
 
     constructor() {
-        super("/api/login")
-        this.init()
+        super("/api/login", new LoginController())
     }
 
-    public singUp(req: Request, res: Response, next: NextFunction) {
-        User.register(new User(req.body.user), req.body.password, function (err, result) {
-            if (err) {
-                console.log('error while user register!', err)
-                res.status(500).json(err)
-            } else {
-                result = {
-                    account: result,
-                    message: "Você foi registrado com sucesso!"
-                }
-                res.status(200).json(result)
-            }
-        })
-    }
-
-    public checkEmailUsername(req: Request, res: Response, next: NextFunction) {
-        User.findOne(req.body, function (err, result) {
-            if (err) {
-                res.status(500).json(err)
-            }
-            res.status(200).json(result)
-        })
-    }
-
-    public login(req: Request, res: Response, next: NextFunction) {
-        var token = jwt.encode(new User(req.user), ServerConfig.jwtSecret)
-        var user = User.findOne(req.user, (err, result) => {
-            var body = {
-                user: result,
-                token,
-                message: "Seja bem-vindo, " + result._firstName + "!"
-            }
-
-            res.status(200).json(body)
-        })
-    }
-
-    public reAuth(req: Request, res: Response, next: NextFunction) {
-        var token = jwt.encode(new User(req.user), ServerConfig.jwtSecret)
-        var user = User.findOne(req.user, (err, result) => {
-            var body = {
-                user: result,
-                token
-            }
-            res.status(200).json(body)
-        })
-    }
-
-    init() {
-        this.router.post("/singUp", this.singUp)
-        this.router.post("/checkEmailUsername", this.checkEmailUsername)
-        this.router.post("/login", passport.authenticate('local'), this.login)
-        this.router.get("/reAuth", passport.authenticate('jwt'), this.reAuth)
+    public init() {
+        this.router.get("/reAuth", passport.authenticate('jwt'), this.controller.reAuth)
+        this.router.post("/changePassword", this.controller.changePassword)
+        this.router.post("/checkEmailUsername", this.controller.checkEmailUsername)
+        this.router.post("/login", passport.authenticate('local'), this.controller.login)
+        this.router.post("/recoverPassword", this.controller.recoverPassword)
+        this.router.post("/singUp", this.controller.singUp)
         super.beUsed()
     }
 }
 
-export default new UserRoute().router
+export default new LoginRoute()
