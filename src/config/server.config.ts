@@ -3,14 +3,19 @@ import * as cookieParser from 'cookie-parser'
 import * as cors from 'cors'
 import * as express from 'express'
 import * as expressSession from 'express-session'
+import * as http from 'http';
+import * as io from 'socket.io'
 import * as passport from 'passport'
 
 import { AuthStrategy } from './auth.strategy'
-import { Server } from 'http'
 import { User } from '../schema/user.schema'
 
+var httpFac = require('http')
+
 export class ServerConfig {
-    private static _instance: express.Express
+    private static _express: express.Express
+
+    private static _http: http.Server
 
     public static jwtSecret: string = 'estagio4me secret'
 
@@ -18,25 +23,32 @@ export class ServerConfig {
 
     public static startServer() {
         var port = process.env.PORT || 3000
-        var server: Server = this._instance.listen(port, () => {
+        this.getHttpInstance().listen(port, () => {
             console.log("Server is runing on port " + port + " at " + new Date().toLocaleString())
         })
         process.on('SIGINT', () => {
-            server.close(() => {
+            this.getHttpInstance().close(() => {
                 console.log("Server on port 3000 is closed.")
                 process.exit()
             })
         })
     }
 
-    public static getInstance(): express.Express {
-        if (!this._instance) {
-            this._instance = this._factoryApp()
+    public static getExpressInstance(): express.Express {
+        if (!this._express) {
+            this._express = this._factoryExpress()
         }
-        return this._instance
+        return this._express
     }
 
-    public static _factoryApp(): express.Express {
+    public static getHttpInstance(): http.Server {
+        if (!this._http) {
+            this._http = this._factoryHttp()
+        }
+        return this._http
+    }
+
+    public static _factoryExpress(): express.Express {
         var app: express.Express = express()
         app.get('/', function (request, response) {
             response.send('You are on server')
@@ -63,5 +75,9 @@ export class ServerConfig {
         passport.deserializeUser(User.deserializeUser())
 
         return app
+    }
+
+    public static _factoryHttp(): http.Server {
+        return httpFac.Server(this.getExpressInstance())
     }
 }

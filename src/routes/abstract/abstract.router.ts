@@ -7,7 +7,7 @@ export abstract class AbstractRouter<T extends AbstractController> {
 
     constructor(protected url: string,
         public controller: T,
-        protected app: Express = ServerConfig.getInstance(),
+        protected app: Express = ServerConfig.getExpressInstance(),
         public router: Router = Router()) {
         this.init()
     }

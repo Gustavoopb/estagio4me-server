@@ -33,7 +33,7 @@ export class RatingController extends AbstractController {
     }
 
     public findByAuthUser(req: Request, res: Response, next: NextFunction) {
-        Rating.find({ _user: req.user._id })
+        Rating.find({ _user: req.user._id }).sort({ _stars: 1 })
             .populate("_internship _user")
             .populate({ path: "_internship", model: "Internship", match: { _isActive: true }, populate: [{ path: "_requiredSkills", model: "Skill" }, { path: "_preferredSkills", model: "Skill" }] })
             .exec((err, docs) => {

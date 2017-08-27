@@ -9,23 +9,27 @@ class InternshipController extends abstract_controller_1.AbstractController {
             if (err) {
                 console.log(err);
                 res.status(500).json(err);
+                next();
             }
             else {
                 res.status(200).json(data);
+                next();
             }
         });
     }
     findOneAndUpdate(req, res, next) {
         var internship = new internship_schema_1.Internship(req.body);
-        internship_schema_1.Internship.findByIdAndUpdate(internship.get('id'), internship)
+        internship_schema_1.Internship.findByIdAndUpdate(internship.get('id'), internship, { new: true })
             .populate('_preferredSkills _requiredSkills')
             .exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
+                next();
             }
             else {
                 console.log(err);
                 res.status(500).json(err);
+                next();
             }
         });
     }
@@ -33,10 +37,12 @@ class InternshipController extends abstract_controller_1.AbstractController {
         internship_schema_1.Internship.findById(req.params.id, function (err, docs) {
             if (!err) {
                 res.status(200).json(docs);
+                next();
             }
             else {
                 console.log(err);
                 res.status(500).json(err);
+                next();
             }
         });
     }
@@ -44,10 +50,12 @@ class InternshipController extends abstract_controller_1.AbstractController {
         internship_schema_1.Internship.find().populate('_preferredSkills _requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
+                next();
             }
             else {
                 console.log(err);
                 res.status(500).json(err);
+                next();
             }
         });
     }
@@ -55,10 +63,12 @@ class InternshipController extends abstract_controller_1.AbstractController {
         internship_schema_1.Internship.find(req.body).populate('_preferredSkills _requiredSkills').sort({ _createdAt: -1 }).exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
+                next();
             }
             else {
                 console.log(err);
                 res.status(500).json(err);
+                next();
             }
         });
     }
@@ -66,10 +76,12 @@ class InternshipController extends abstract_controller_1.AbstractController {
         internship_schema_1.Internship.findOne(req.body).populate('_preferredSkills _requiredSkills').exec((err, docs) => {
             if (!err) {
                 res.status(200).json(docs);
+                next();
             }
             else {
                 console.log(err);
                 res.status(500).json(err);
+                next();
             }
         });
     }

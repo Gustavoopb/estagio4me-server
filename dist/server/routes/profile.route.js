@@ -13,5 +13,5 @@ class ProfileRoute extends abstract_router_1.AbstractRouter {
         super.beUsed();
     }
 }
-exports.default = new ProfileRoute();
+exports.ProfileRoute = ProfileRoute;
 //# sourceMappingURL=profile.route.js.map

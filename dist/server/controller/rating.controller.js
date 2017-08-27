@@ -31,7 +31,7 @@ class RatingController extends abstract_controller_1.AbstractController {
         });
     }
     findByAuthUser(req, res, next) {
-        rating_schema_1.Rating.find({ _user: req.user._id })
+        rating_schema_1.Rating.find({ _user: req.user._id }).sort({ _stars: 1 })
             .populate("_internship _user")
             .populate({ path: "_internship", model: "Internship", match: { _isActive: true }, populate: [{ path: "_requiredSkills", model: "Skill" }, { path: "_preferredSkills", model: "Skill" }] })
             .exec((err, docs) => {

@@ -8,27 +8,34 @@ const expressSession = require("express-session");
 const passport = require("passport");
 const auth_strategy_1 = require("./auth.strategy");
 const user_schema_1 = require("../schema/user.schema");
+var httpFac = require('http');
 class ServerConfig {
     constructor() { }
     static startServer() {
         var port = process.env.PORT || 3000;
-        var server = this._instance.listen(port, () => {
+        this.getHttpInstance().listen(port, () => {
             console.log("Server is runing on port " + port + " at " + new Date().toLocaleString());
         });
         process.on('SIGINT', () => {
-            server.close(() => {
+            this.getHttpInstance().close(() => {
                 console.log("Server on port 3000 is closed.");
                 process.exit();
             });
         });
     }
-    static getInstance() {
-        if (!this._instance) {
-            this._instance = this._factoryApp();
+    static getExpressInstance() {
+        if (!this._express) {
+            this._express = this._factoryExpress();
         }
-        return this._instance;
+        return this._express;
     }
-    static _factoryApp() {
+    static getHttpInstance() {
+        if (!this._http) {
+            this._http = this._factoryHttp();
+        }
+        return this._http;
+    }
+    static _factoryExpress() {
         var app = express();
         app.get('/', function (request, response) {
             response.send('You are on server');
@@ -52,6 +59,9 @@ class ServerConfig {
         passport.serializeUser(user_schema_1.User.serializeUser());
         passport.deserializeUser(user_schema_1.User.deserializeUser());
         return app;
+    }
+    static _factoryHttp() {
+        return httpFac.Server(this.getExpressInstance());
     }
 }
 ServerConfig.jwtSecret = 'estagio4me secret';

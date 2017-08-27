@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { AbstractRouter } from './abstract/abstract.router'
 import { ProfileController } from '../controller/profile.controller'
 
-class ProfileRoute extends AbstractRouter<ProfileController> {
+export class ProfileRoute extends AbstractRouter<ProfileController> {
 
     constructor() {
         super("/api/profile", new ProfileController)
@@ -17,5 +17,3 @@ class ProfileRoute extends AbstractRouter<ProfileController> {
         super.beUsed()
     }
 }
-
-export default new ProfileRoute()

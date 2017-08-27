@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { AbstractRouter } from './abstract/abstract.router'
 import { SkillController } from '../controller/skill.controller'
 
-class SkillRoute extends AbstractRouter<SkillController> {
+export class SkillRoute extends AbstractRouter<SkillController> {
 
     constructor() {
         super("/api/skill", new SkillController)
@@ -21,5 +21,3 @@ class SkillRoute extends AbstractRouter<SkillController> {
         super.beUsed()
     }
 }
-
-export default new SkillRoute()

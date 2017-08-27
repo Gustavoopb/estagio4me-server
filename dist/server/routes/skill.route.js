@@ -17,5 +17,5 @@ class SkillRoute extends abstract_router_1.AbstractRouter {
         super.beUsed();
     }
 }
-exports.default = new SkillRoute();
+exports.SkillRoute = SkillRoute;
 //# sourceMappingURL=skill.route.js.map

@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { AbstractRouter } from './abstract/abstract.router'
 import { LoginController } from "../controller/login.controller"
 
-class LoginRoute extends AbstractRouter<LoginController> {
+export class LoginRoute extends AbstractRouter<LoginController> {
 
     constructor() {
         super("/api/login", new LoginController())
@@ -21,5 +21,3 @@ class LoginRoute extends AbstractRouter<LoginController> {
         super.beUsed()
     }
 }
-
-export default new LoginRoute()

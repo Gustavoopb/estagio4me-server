@@ -13,10 +13,10 @@ class InternshipRoute extends abstract_router_1.AbstractRouter {
         this.router.post("/findByFilter", this.controller.findByFilter);
         this.router.post("/findOneByFilter", passport.authenticate('jwt'), this.controller.findOneByFilter);
         this.router.post("/insert", passport.authenticate('jwt'), this.controller.insert);
-        this.router.post("/updateOne", passport.authenticate('jwt'), this.controller.findOneAndUpdate);
+        this.router.post("/updateOne", passport.authenticate('jwt'), this.controller.findOneAndUpdate.bind(this.controller));
         this.router.delete("/delete/:id", passport.authenticate('jwt'), this.controller.delete);
         super.beUsed();
     }
 }
-exports.default = new InternshipRoute();
+exports.InternshipRoute = InternshipRoute;
 //# sourceMappingURL=internship.route.js.map

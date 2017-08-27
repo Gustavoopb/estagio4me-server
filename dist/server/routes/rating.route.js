@@ -15,5 +15,5 @@ class RatingRoute extends abstract_router_1.AbstractRouter {
         super.beUsed();
     }
 }
-exports.default = new RatingRoute();
+exports.RatingRoute = RatingRoute;
 //# sourceMappingURL=rating.route.js.map

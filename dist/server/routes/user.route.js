@@ -15,5 +15,5 @@ class UserRoute extends abstract_router_1.AbstractRouter {
         super.beUsed();
     }
 }
-exports.default = new UserRoute();
+exports.UserRoute = UserRoute;
 //# sourceMappingURL=user.route.js.map

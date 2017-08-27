@@ -17,5 +17,5 @@ class LoginRoute extends abstract_router_1.AbstractRouter {
         super.beUsed();
     }
 }
-exports.default = new LoginRoute();
+exports.LoginRoute = LoginRoute;
 //# sourceMappingURL=login.router.js.map

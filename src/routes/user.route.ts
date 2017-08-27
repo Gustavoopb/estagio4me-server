@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { AbstractRouter } from './abstract/abstract.router'
 import { UserController } from '../controller/user.controller'
 
-class UserRoute extends AbstractRouter<UserController> {
+export class UserRoute extends AbstractRouter<UserController> {
 
     constructor() {
         super('/api/user', new UserController())
@@ -19,5 +19,3 @@ class UserRoute extends AbstractRouter<UserController> {
         super.beUsed()
     }
 }
-
-export default new UserRoute()

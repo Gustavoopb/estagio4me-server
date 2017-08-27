@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const server_config_1 = require("../../config/server.config");
 class AbstractRouter {
-    constructor(url, controller, app = server_config_1.ServerConfig.getInstance(), router = express_1.Router()) {
+    constructor(url, controller, app = server_config_1.ServerConfig.getExpressInstance(), router = express_1.Router()) {
         this.url = url;
         this.controller = controller;
         this.app = app;

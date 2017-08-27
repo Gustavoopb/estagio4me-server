@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express'
 import { AbstractRouter } from './abstract/abstract.router'
 import { RatingController } from "../controller/rating.controller"
 
-class RatingRoute extends AbstractRouter<RatingController> {
+export class RatingRoute extends AbstractRouter<RatingController> {
 
     constructor() {
         super("/api/rating", new RatingController())
@@ -19,5 +19,3 @@ class RatingRoute extends AbstractRouter<RatingController> {
         super.beUsed()
     }
 }
-
-export default new RatingRoute()
